@@ -1,6 +1,6 @@
 import discord
-from discord.ext import commands
 from discord import Option
+from discord.ext import commands
 
 client = discord.Bot()
 testing_server = [522277286024708096, 574449304832311297]
@@ -18,33 +18,37 @@ class Moderation(commands.Cog):
     @client.slash_command(guild_ids=testing_server, name="kick", description="Kickea un miembro del server.")
     @commands.has_permissions(kick_members=True)
     @commands.has_role("Mod")
-    async def kick(self, ctx, member: discord.Member, *, modreason: str):
+    async def Kick(self, ctx, member: discord.Member, *, modreason: str):
         await member.kick(reason=modreason)
-        conf_embed = discord.Embed(title="A casa platita.", description=f"{member.mention} ha sido papiado por {ctx.author.mention}.", color=discord.Color.green())
-        conf_embed.add_field(name="Motivo:", value=modreason, inline=False)
-        conf_embed.set_image(url="https://c.tenor.com/TG5OF7UkLasAAAAC/tenor.gif")
-        await ctx.respond(embed=conf_embed)
+        kick_embed = discord.Embed(
+            title="A casa platita.",
+            description=f"{member.mention} ha sido papiado por {ctx.author.mention}.",
+            color=discord.Color.green()
+            )
+        kick_embed.add_field(name="Motivo:", value=modreason, inline=False)
+        kick_embed.set_image(url="https://c.tenor.com/TG5OF7UkLasAAAAC/tenor.gif")
+        await ctx.respond(embed=kick_embed)
     
     #El siguiente comando sirve para banear a un usuario del servidor, tomando
     #Los siguientes valores: usuario y motivo del ban
 
-    @client.slash_command(guild_ids = testing_server, name = "ban", description = "Bans a member")
+    @client.slash_command(guild_ids = testing_server, name = "ban", description = "Banea un miembro del server.")
     @commands.has_permissions(ban_members = True, administrator = True)
-    async def ban(self, ctx, member: Option(discord.Member, description = "Who do you want to ban?"), modreason: Option(str, description = "Why?", required = False)):
-        if member.id == ctx.author.id: #checks to see if they're the same
-            await ctx.respond("BRUH! You can't ban yourself!")
-        elif member.guild_permissions.administrator:
-            await ctx.respond("Stop trying to ban an admin! :rolling_eyes:")
-        else:
-            if modreason == None:
-                modreason = f"None provided by {ctx.author}"
-            await member.ban(reason = modreason)
-            # await ctx.respond(f"<@{ctx.author.id}>, <@{member.id}> has been banned successfully from this server!\n\nReason: {reason}")
-            conf_embed = discord.Embed(title="A casa platita.", description=f"{member.mention} ha sido evangelizado por {ctx.author.mention}.", color=discord.color.green())
-            conf_embed.add_field(name="Motivo:", value=modreason, inline=False)
-            conf_embed.set_image(url="https://c.tenor.com/TG5OF7UkLasAAAAC/tenor.gif")
-            await ctx.respond(embed=conf_embed)
-
+    @commands.has_role("Mod")
+    async def Ban(
+        self, ctx,
+        member: Option(discord.Member, description = "¿A quién quieres banear?"),
+        modreason: Option(str, description = "Motivo del baneo.", required = True)
+        ):
+        ban_embed = discord.Embed(
+            title="A casa platita.",
+            description=f"{member.mention} ha sido evangelizado por {ctx.author.mention}.",
+            color=discord.color.green()
+            )
+        ban_embed.add_field(name="Motivo:", value=modreason, inline=False)
+        ban_embed.set_image(url="https://c.tenor.com/TG5OF7UkLasAAAAC/tenor.gif")
+        await ctx.respond(embed=ban_embed)
+        await member.ban(reason=modreason)
 
 
 

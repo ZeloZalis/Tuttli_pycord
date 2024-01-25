@@ -1,6 +1,6 @@
-from discord.ext import commands
-import discord
 import random
+import discord
+from discord.ext import commands
 
 client = discord.Bot()
 testing_server = [522277286024708096, 574449304832311297]
