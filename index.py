@@ -1,7 +1,9 @@
 import os
+import json
 import discord
 from discord import Game
 from decouple import config
+from datetime import datetime
 
 #Inicializamos el bot en una variable
 client = discord.Bot()
@@ -28,17 +30,31 @@ for cogfile in cogfiles:
 #Se está testeando el bot
 testing_server = [522277286024708096, 574449304832311297]
 
+#La siguiente función sirve para recoger el día, mes y año
+#Y lo guarda en una variable concatenando los datos en una sola
+#Cadena, .zfill(2) se utiliza para asegurarse de que cada valor
+#Tenga mínimo 2 caracteres
+def Get_datetime():
+    today = datetime.now()
+    today_info = str(today.day).zfill(2) + str(today.month).zfill(2) + str(today.year)
+    return today_info
+
 #before_invoke se utiliza para invocar una función delante de otra de manera automática
 #En este caso, la función recoge los datos del autor, del servidor y del comando que
 #Se está ejecutando para imprimirlo en pantalla a manera de log
 @client.before_invoke
 async def Get_logs(ctx):
-    author_id = ctx.author.id
-    author_name = ctx.author.name
-    guild_id = ctx.guild.id
-    guild_name = ctx.guild.name
-    command_name = client.get_command(ctx.command.name).name
-    print(f"El usuario {author_name} ({author_id}) ha ejecutado el comando {command_name} en {guild_name} ({guild_id}).")
+    date_time = Get_datetime()
+    log = {
+        "author_name": ctx.author.name,
+        "author_id": ctx.author.id,
+        "guild_name": ctx.guild.name,
+        "guild_id": ctx.guild.id,
+        "command_used": client.get_command(ctx.command.name).name
+    }
+    with open(f"./local/CommandLogs{date_time}.txt", "a+") as f:
+        json.dump(log, f)
+    print(f"El usuario {log['author_name']} ({log['author_id']}) ha ejecutado el comando {log['command_used']} en {log['guild_name']} ({log['guild_id']}).")
 
 #Este es un comando global (no necesita agregar los servidores en los que funcionará)
 #Al ser comando global, tarda en actualizarse en todos los servidores

@@ -47,8 +47,8 @@ class Moderation(commands.Cog):
             )
         ban_embed.add_field(name="Motivo:", value=modreason, inline=False)
         ban_embed.set_image(url="https://c.tenor.com/TG5OF7UkLasAAAAC/tenor.gif")
-        await ctx.respond(embed=ban_embed)
         await member.ban(reason=modreason)
+        await ctx.respond(embed=ban_embed)
 
 
 
