@@ -28,7 +28,13 @@ class Utility(commands.Cog):
     @client.slash_command(guild_ids=testing_server, name="roll", description="Tira un dado de 6 caras.")
     async def Roll(self, ctx):
         num = random.randint(1, 6)
-        await ctx.respond(f"{ctx.author.mention} ha tirado los dados y ha sacado un {num}.")
+        dice_embed = discord.Embed(
+            title=f"¡Ha sacado un... {num}!",
+            color = discord.Color.green()
+        )
+        dice_embed.set_author(name=f"¡{ctx.author.name} ha lanzado los dados!", icon_url=ctx.author.avatar)
+        dice_embed.set_image(url="https://c.tenor.com/FOvBc0i9ZDcAAAAC/tenor.gif")
+        await ctx.respond(embed=dice_embed)
 
 def setup(client):
     client.add_cog(Utility(client))
