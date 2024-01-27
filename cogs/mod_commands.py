@@ -2,7 +2,6 @@ import discord
 from discord import Option
 from discord.ext import commands
 
-client = discord.Bot()
 testing_server = [522277286024708096, 574449304832311297]
 
 #Los siguientes comandos son comandos de moderación que sólo podrán ser usados
@@ -15,7 +14,7 @@ class Moderation(commands.Cog):
     #El siguiente comando sirve para kickear a un usuario del servidor, tomando
     #Los siguientes valores: usuario y motivo del kick
 
-    @client.slash_command(guild_ids=testing_server, name="kick", description="Kickea un miembro del server.")
+    @commands.slash_command(guild_ids=testing_server, name="kick", description="Kickea un miembro del server.")
     @commands.has_permissions(kick_members=True)
     @commands.has_role("Mod")
     async def Kick(self, ctx, member: discord.Member, *, modreason: str):
@@ -32,7 +31,7 @@ class Moderation(commands.Cog):
     #El siguiente comando sirve para banear a un usuario del servidor, tomando
     #Los siguientes valores: usuario y motivo del ban
 
-    @client.slash_command(guild_ids = testing_server, name = "ban", description = "Banea un miembro del server.")
+    @commands.slash_command(guild_ids = testing_server, name = "ban", description = "Banea un miembro del server.")
     @commands.has_permissions(ban_members = True, administrator = True)
     @commands.has_role("Mod")
     async def Ban(
@@ -74,7 +73,7 @@ class Moderation(commands.Cog):
     #El siguiente comando es para quitarle ban a un usuario
     #En este caso, como no se puede etiquetar al usuario, se requiere ingresar el ID del mismo
 
-    @client.slash_command(guild_ids=testing_server, name="unban", description="Desbanea un miembro del server.")
+    @commands.slash_command(guild_ids=testing_server, name="unban", description="Desbanea un miembro del server.")
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     @commands.has_role("Mod")
