@@ -1,5 +1,4 @@
 import random
-import discord
 from discord.ext import commands
 
 testing_server = [522277286024708096, 574449304832311297]
