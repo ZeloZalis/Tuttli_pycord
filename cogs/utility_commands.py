@@ -51,7 +51,7 @@ class Utility(commands.Cog):
 
     #Borra una cantidad de mensajes del chat
     @commands.slash_command(guild_ids=testing_server, name="clear", description="Borra una cantidad de mensajes del chat.")
-    @commands.has_role("Mod")
+    @commands.has_any_role("Mod", "Shōgun")
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, count: int):
         await ctx.channel.purge(limit=count+1)

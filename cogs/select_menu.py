@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 
 testing_server = [522277286024708096, 574449304832311297]
+client = discord.Bot()
 
 class SelectMenu(commands.Cog):
     def __init__(self, client):
@@ -33,11 +34,19 @@ class SelectMenu(commands.Cog):
             #Y con el comando random.choice() seleccionará un gif al azar para enviarlo
             async def select_callback(self, select, interaction):
                 with open(f"resources/{select.values[0]}.txt", "r") as file:
+                    name_solicited = select.values[0]
                     response_list = file.readlines()
                     response = random.choice(response_list)
-                    await interaction.response.send_message(response)
+                menu_embed = discord.Embed(color=discord.Color.green())
+                menu_embed.set_author(name=f"{ctx.author.name} ha seleccionado a {name_solicited.capitalize()}.", icon_url=ctx.author.avatar)
+                menu_embed.set_image(url=response)
+                menu_embed.set_footer(
+                    text="Gracias por usar a Tuttli bot!",
+                    icon_url="https://cdn.discordapp.com/avatars/1186161512298074122/099fc4f5836e1152d3625345eae7f1ad.png"
+                    )
+                await interaction.response.send_message(embed=menu_embed)
         view = MyView()
-        await ctx.respond("Escoge una opción y mira la magia.", view=view)
+        await ctx.respond("Escoge una opción y mira la magia.", view=view, ephemeral=True)
 
 def setup(client):
     client.add_cog(SelectMenu(client))
