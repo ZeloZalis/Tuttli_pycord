@@ -14,27 +14,37 @@ class Wikipedia_API(commands.Cog):
 
     @commands.slash_command(guild_ids = testing_server, name='wiki', description="Para buscar algo en wikipedia.")
     async def wiki(self, ctx, *, busqueda: str):
-        parrafo = {
-            'action':'query',
-            'format':'json',
-            'titles':busqueda,
-            'prop':'info',
-            'origin':'*'
-        }
-        request_api = requests.get("https://es.wikipedia.org/w/api.php", params=parrafo)
-        data = request_api.json()
-        first_page = next(iter(data['query']['pages'].values()))
-        the_url = f"https://es.wikipedia.org/?curid={first_page['pageid']}"
-
+        await ctx.defer(ephemeral=True)
+        icon = False
+        try:
+            parrafo = {
+                'action':'query',
+                'format':'json',
+                'titles':busqueda,
+                'prop':'info',
+                'origin':'*'
+            }
+            request_api = requests.get("https://es.wikipedia.org/w/api.php", params=parrafo)
+            data = request_api.json()
+            first_page = next(iter(data['query']['pages'].values()))
+            the_url = f"https://es.wikipedia.org/?curid={first_page['pageid']}"
+            icon = True
+        except Exception as e:
+            print(f"Error: {e}")
         response = wikipedia.summary(busqueda, sentences=2)
         response_clean = re.sub(r'\[\d+\]|\[\d+\]\[.*?\]|\[http.*?\]', '', response)
 
         wiki_embed = discord.Embed(color=discord.Color.green())
         wiki_embed.set_author(name=f"Requested by. {ctx.author.name}", icon_url=ctx.author.avatar)
         wiki_embed.add_field(name=busqueda, value=response_clean)
-        wiki_embed.add_field(name="Enlace al artículo:", value=the_url, inline=False)
+        if icon == True:
+            wiki_embed.add_field(name="Enlace al artículo:", value=the_url, inline=False)
+        else:
+            wiki_embed.add_field(name="Enlace al artículo:", inline=False)
         wiki_embed.set_footer(text="Extraído de Wikipedia", icon_url="https://cdn.icon-icons.com/icons2/2699/PNG/512/wikipedia_logo_icon_168863.png")
-        await ctx.respond(embed=wiki_embed)
+        await ctx.respond(embed=wiki_embed, ephemeral=False)
+        #El followup sirve para enviar más de un mensaje en respuesta a una interacción
+        # await ctx.followup.send("Texto de prueba.")
 
 def setup(client):
     client.add_cog(Wikipedia_API(client))
