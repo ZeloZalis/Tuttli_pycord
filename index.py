@@ -7,6 +7,8 @@ from datetime import datetime
 
 #Inicializamos el bot en una variable
 client = discord.Bot()
+intents = discord.Intents.default()
+intents.messages = True
 
 #Se ejecuta al iniciar el bot
 #El change_presence es para cambiar el mensaje "jugando" del bot
@@ -61,5 +63,29 @@ async def Get_logs(ctx):
 @client.slash_command(name="ping", description="Muestra el ping del bot.")
 async def Ping(ctx):
     await ctx.respond(f"Mi ping es de {int(client.latency*1000)} ms.")
+
+#La siguiente línea de comando, detecta un mensaje en channel_id, y si el mensaje
+#Contiene un Embed, lo copia y lo envía en thread_id
+    # message.author.bot
+@client.event
+async def on_message(message):
+    if message.type != discord.MessageType.default:
+        return
+    channel_id = 1166507853314539561
+    thread_id = 1206075832016175155
+
+    if message.channel.id == channel_id:
+        if message.embeds:
+            print(f"Mensaje detectado en {channel_id}.")
+            guild = message.guild
+            thread = guild.get_thread(thread_id)
+            if thread:
+                print(f"Mensaje incrustado en el hilo {thread_id}.")
+                embed = message.embeds[0]
+                await thread.send(embed=embed) 
+            else:
+                print("Error, no se ha enviado el mensaje.")
+        else:
+            print("El mensaje del canal no contiene un embed.")
 
 client.run(config("token"))
