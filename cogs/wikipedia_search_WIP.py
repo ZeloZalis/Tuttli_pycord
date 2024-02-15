@@ -42,28 +42,57 @@ class Wikipedia_API(commands.Cog):
             the_url = f"https://es.wikipedia.org/?curid={first_page['pageid']}"
             page_url = True
 
+        
+            #Ahora, realizamos la búsqueda, y ponemos un límite de 2 párrafos
+            response = wikipedia.summary(busqueda, sentences=2)
+            #El re.sub es para eliminar ciertos caracteres de la respuesta
+            response_clean = re.sub(r'\[\d+\]|\[\d+\]\[.*?\]|\[http.*?\]', '', response)
+
+            #Creamos un Embed que contendrá la información de la búsqueda para imprimirlo en un mensaje
+            wiki_embed = discord.Embed(color=discord.Color.green())
+            wiki_embed.set_author(name=f"Requested by. {ctx.author.name}", icon_url=ctx.author.avatar)
+            wiki_embed.add_field(name=busqueda_up, value=response_clean)
+            if page_url == True:
+                wiki_embed.add_field(name="Enlace al artículo:", value=the_url, inline=False)
+            wiki_embed.set_footer(text="Extraído de Wikipedia", icon_url="https://cdn.icon-icons.com/icons2/2699/PNG/512/wikipedia_logo_icon_168863.png")
+            await ctx.respond(embed=wiki_embed)
+    
         #La siguiente excepción es para guardar el error de búsqueda
         #Cuando haya más de 1 resultado posible, y mostrarlo por pantalla
         #Para que el usuario decida cuál resultado quiere
         except wikipedia.DisambiguationError as e:
-            options = e.options
-            # message = f"'{busqueda}' puede referirse a:\n" + "\n".join([f"{i+1}. {option}" for i, option in enumerate(options)])
-            await ctx.followup.send(f"Tienes las siguientes opciones: {options}")
-            #Luego se agrega una lógica acá
-        
-        #Ahora, realizamos la búsqueda, y ponemos un límite de 2 párrafos
-        response = wikipedia.summary(busqueda, sentences=2)
-        #El re.sub es para eliminar ciertos caracteres de la respuesta
-        response_clean = re.sub(r'\[\d+\]|\[\d+\]\[.*?\]|\[http.*?\]', '', response)
+            get_options = e.options
+            class OptionList(discord.ui.View):
+                def __init__(self):
+                    super().__init__()
 
-        #Creamos un Embed que contendrá la información de la búsqueda para imprimirlo en un mensaje
-        wiki_embed = discord.Embed(color=discord.Color.green())
-        wiki_embed.set_author(name=f"Requested by. {ctx.author.name}", icon_url=ctx.author.avatar)
-        wiki_embed.add_field(name=busqueda_up, value=response_clean)
-        if page_url == True:
-            wiki_embed.add_field(name="Enlace al artículo:", value=the_url, inline=False)
-        wiki_embed.set_footer(text="Extraído de Wikipedia", icon_url="https://cdn.icon-icons.com/icons2/2699/PNG/512/wikipedia_logo_icon_168863.png")
-        await ctx.respond(embed=wiki_embed)
+                @discord.ui.select(
+                        placeholder="Opciones",
+                        max_values=1,
+                        min_values=1,
+                        options=[discord.SelectOption(label=option, value=option.lower()) for option in get_options]
+                )
+                async def callback(self, select:discord.ui.Select, interaction: discord.Interaction):
+                    print("Se ha iniciado el callback.")
+                    await interaction.response.send_message(f"Has seleccionado {select.values[0]}")
+            view = OptionList()
+            print("View creado.")
+            await ctx.respond(f"La palabra que estás buscando es algo ambigüa, he encontrado las siguientes opciones, escoge cuál es la que buscas.", view=view)
+            print("Mensaje enviado en el chat.")
+            # options = e.options #Devuelve ["Uno", "Dos"]
+
+            # option_list = []
+            # for i in options:
+            #     option_list.append(f"{discord.SelectOption(label=options[i])}")
+            # print(str(option_list))
+            # class Option_list(discord.ui.View):
+            #     @discord.ui.select(placeholder="Opciones", options=option_list)
+
+                
+
+            # message = f"'{busqueda}' puede referirse a:\n" + "\n".join([f"{i+1}. {option}" for i, option in enumerate(options)])
+            # await ctx.followup.send(f"Tienes las siguientes opciones: {options}")
+            #Luego se agrega una lógica acá
         #El followup sirve para enviar más de un mensaje en respuesta a una interacción
         # await ctx.followup.send("Texto de prueba.")
 
