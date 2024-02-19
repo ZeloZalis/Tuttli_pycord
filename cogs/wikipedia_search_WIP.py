@@ -2,6 +2,7 @@ import re
 import discord
 import requests
 import wikipedia
+from bs4 import BeautifulSoup
 from discord.ext import commands
 
 #Declaramos el lenguaje en el que trabajará wikipedia
@@ -30,10 +31,11 @@ class SelectMenu(discord.ui.Select):
         data = request_api.json()
         first_page = next(iter(data['query']['pages'].values()))
         the_url = f"https://es.wikipedia.org/?curid={first_page['pageid']}"
+        lis = BeautifulSoup(the_url, features="html.parser").find_all('li')
         response_clean = re.sub(r'\[\d+\]|\[\d+\]\[.*?\]|\[http.*?\]', '', response)
 
         wiki_embed = discord.Embed(color=discord.Color.green())
-        wiki_embed.set_author(name=f"Requested by. {self.cog.ctx.author.name}", icon_url=self.cog.ctx.author.avatar)
+        wiki_embed.set_author(name=f"Pedido por: {self.cog.ctx.author.name}", icon_url=self.cog.ctx.author.avatar)
         wiki_embed.add_field(name=self.values[0].upper(), value=response_clean)
         wiki_embed.add_field(name="Enlace al artículo:", value=the_url, inline=False)
         wiki_embed.set_footer(text="Extraído de Wikipedia", icon_url="https://cdn.icon-icons.com/icons2/2699/PNG/512/wikipedia_logo_icon_168863.png")
@@ -83,7 +85,7 @@ class Wikipedia_API(commands.Cog):
 
             #Creamos un Embed que contendrá la información de la búsqueda para imprimirlo en un mensaje
             wiki_embed = discord.Embed(color=discord.Color.green())
-            wiki_embed.set_author(name=f"Requested by. {ctx.author.name}", icon_url=ctx.author.avatar)
+            wiki_embed.set_author(name=f"Pedido por: {ctx.author.name}", icon_url=ctx.author.avatar)
             wiki_embed.add_field(name=self.busqueda_up, value=response_clean, inline=False)
             wiki_embed.add_field(name="Enlace al artículo:", value=the_url, inline=False)
             wiki_embed.set_footer(text="Extraído de Wikipedia", icon_url="https://cdn.icon-icons.com/icons2/2699/PNG/512/wikipedia_logo_icon_168863.png")
