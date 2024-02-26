@@ -2,7 +2,6 @@ import re
 import discord
 import requests
 import wikipedia
-from bs4 import BeautifulSoup
 from discord.ext import commands
 
 #Declaramos el lenguaje en el que trabajará wikipedia
@@ -11,9 +10,14 @@ wikipedia.set_lang("es")
 
 testing_server = [522277286024708096, 574449304832311297]
 
+#Dentro de la clase vamos a obtener un valor cog, el cual nos permitirá
+#Obtener los valores del author, como la imagen, el usuario, entre otras cosas
 class SelectMenu(discord.ui.Select):
     def __init__(self, cog, des_options):
         self.cog = cog
+        #Convertimos las opciones recibidas en una lista y luego las presentamos
+        #A partir de la posición 1 en adelante, ya que la posición 0 es la
+        #Búsqueda inicial que hicimos
         fix_options = list(dict.fromkeys(des_options))
         options = [discord.SelectOption(label=i) for i in fix_options[1:]]
         super().__init__(placeholder="Selecciona una opción", options=options)
@@ -31,7 +35,6 @@ class SelectMenu(discord.ui.Select):
         data = request_api.json()
         first_page = next(iter(data['query']['pages'].values()))
         the_url = f"https://es.wikipedia.org/?curid={first_page['pageid']}"
-        lis = BeautifulSoup(the_url, features="html.parser").find_all('li')
         response_clean = re.sub(r'\[\d+\]|\[\d+\]\[.*?\]|\[http.*?\]', '', response)
 
         wiki_embed = discord.Embed(color=discord.Color.green())
@@ -62,7 +65,6 @@ class Wikipedia_API(commands.Cog):
         #Un tiempo de espera máximo de 3 segundos, si la acción
         #No se realiza en los 3 segundos, dará error, cosa que se puede evitar con un defer()
         await ctx.defer()
-        # busqueda_up = busqueda.upper()
 
         try:
             parrafo = {
@@ -77,7 +79,6 @@ class Wikipedia_API(commands.Cog):
             first_page = next(iter(data['query']['pages'].values()))
             the_url = f"https://es.wikipedia.org/?curid={first_page['pageid']}"
 
-        
             #Ahora, realizamos la búsqueda, y ponemos un límite de 2 párrafos
             response = wikipedia.summary(busqueda, sentences=2)
             #El re.sub es para eliminar ciertos caracteres de la respuesta
