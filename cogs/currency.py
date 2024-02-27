@@ -2,7 +2,7 @@ import discord
 import requests
 from discord.ext import commands
 
-testing_server = [522277286024708096, 574449304832311297]
+testing_server = [522277286024708096, 574449304832311297, 867609439732236318]
 
 class dollarAPI(commands.Cog):
     def __init__(self, client):

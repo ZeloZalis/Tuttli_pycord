@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 from discord.ui import InputText, Modal
 
-testing_server = [522277286024708096, 574449304832311297]
+testing_server = [522277286024708096, 574449304832311297, 867609439732236318]
 
 #Creando un modal
 class MyModal(Modal):

@@ -21,5 +21,5 @@ class Boton(commands.Cog):
         mi_menu = Menu_boton()
         await ctx.respond(view=mi_menu)
 
-def setup(client):
-    client.add_cog(Boton(client))
+# def setup(client):
+#     client.add_cog(Boton(client))
