@@ -8,7 +8,7 @@ from discord.ext import commands
 #En este caso, Español
 wikipedia.set_lang("es")
 
-testing_server = [522277286024708096, 574449304832311297]
+testing_server = [522277286024708096, 574449304832311297, 867609439732236318]
 
 #Dentro de la clase vamos a obtener un valor cog, el cual nos permitirá
 #Obtener los valores del author, como la imagen, el usuario, entre otras cosas

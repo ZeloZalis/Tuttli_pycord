@@ -86,5 +86,5 @@ class Moderation(commands.Cog):
         await ctx.send(embed=confirmation_embed)
 
 
-def setup(client):
-    client.add_cog(Moderation(client))
+# def setup(client):
+#     client.add_cog(Moderation(client))
