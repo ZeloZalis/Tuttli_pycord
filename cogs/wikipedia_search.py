@@ -99,5 +99,5 @@ class Wikipedia_API(commands.Cog):
             view = Desambiguation(self, e.options)
             await ctx.respond("Selecciona una opción.", view=view, ephemeral=True)
 
-def setup(client):
-    client.add_cog(Wikipedia_API(client))
+# def setup(client):
+#     client.add_cog(Wikipedia_API(client))
