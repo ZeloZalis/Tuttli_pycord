@@ -13,10 +13,8 @@ class TrainingRoutine(commands.Cog):
     async def fitness(self, ctx):
         today = date.today()
         day = today.weekday()
-        print(f"today: {today}")
-        print(f"day: {day}")
         if day == 0:
-            fitness_embed = discord.Embed(title="Rutina Lunes", description="Pecho y tríceps", color=discord.Color.green())
+            fitness_embed = discord.Embed(title="Rutina Lunes", description="Pecho y tríceps", color=discord.Color.random())
             fitness_embed.add_field(name="Press de banca con mancuernas", value="4 Series de 10 Repeticiones.")
             fitness_embed.add_field(name="Aperturas con mancuernas", value="3 Series de 12 Repeticiones.")
             fitness_embed.add_field(name="Fondos en banca", value="3 Series de 15 Repeticiones.")
@@ -24,7 +22,7 @@ class TrainingRoutine(commands.Cog):
             fitness_embed.add_field(name="Patada de tríceps con mancuerna", value="3 Series de 15 Repeticiones por brazo.")
             await ctx.respond("Aquí tienes la rutina de hoy.", embed=fitness_embed)
         elif day == 1:
-            fitness_embed = discord.Embed(title="Rutina Martes", description="Espalda y bíceps", color=discord.Color.green())
+            fitness_embed = discord.Embed(title="Rutina Martes", description="Espalda y bíceps", color=discord.Color.random())
             fitness_embed.add_field(name="Remo con mancuerna", value="4 Series de 10 Repeticiones por brazo.")
             fitness_embed.add_field(name="Remo al mentón con mancuernas", value="3 Series de 12 Repeticiones.")
             fitness_embed.add_field(name="Pullover con mancuerna", value="3 Series de 12 Repeticiones.")
@@ -32,7 +30,7 @@ class TrainingRoutine(commands.Cog):
             fitness_embed.add_field(name="Curl de bíceps martillo con mancuernas", value="3 Series de 12 Repeticiones.")
             await ctx.respond("Aquí tienes la rutina de hoy.", embed=fitness_embed)
         elif day == 2:
-            fitness_embed = discord.Embed(title="Rutina Miércoles", description="Piernas y glúteos", color=discord.Color.green())
+            fitness_embed = discord.Embed(title="Rutina Miércoles", description="Piernas y glúteos", color=discord.Color.random())
             fitness_embed.add_field(name="Sentadillas con mancuernas", value="4 Series de 15 Repeticiones.")
             fitness_embed.add_field(name="Zancadas con mancuernas", value="3 Series de 12 Repeticiones por pierna.")
             fitness_embed.add_field(name="Peso muerto rumano con mancuernas", value="3 Series de 15 Repeticiones.")
@@ -40,7 +38,7 @@ class TrainingRoutine(commands.Cog):
             fitness_embed.add_field(name="Elevación de talones con mancuernas", value="3 Series de 25 Repeticiones.")
             await ctx.respond("Ya vas a la mitad, sigue así.", embed=fitness_embed)
         elif day == 3:
-            fitness_embed = discord.Embed(title="Rutina Jueves", description="Hombros y abdominales", color=discord.Color.green())
+            fitness_embed = discord.Embed(title="Rutina Jueves", description="Hombros y abdominales", color=discord.Color.random())
             fitness_embed.add_field(name="Press militar con mancuernas", value="4 Series de 10 Repeticiones.")
             fitness_embed.add_field(name="Elevaciones laterales con mancuernas", value="3 Series de 15 Repeticiones.")
             fitness_embed.add_field(name="Elevaciones frontales con mancuernas", value="3 Series de 15 Repeticiones.")
@@ -49,7 +47,7 @@ class TrainingRoutine(commands.Cog):
             fitness_embed.add_field(name="Plancha", value="3 Series de 30 segundos.")
             await ctx.respond("Estás a un día de terminar.", embed=fitness_embed)
         elif day == 4:
-            fitness_embed = discord.Embed(title="Rutina Viernes", description="Cuerpo completo", color=discord.Color.green())
+            fitness_embed = discord.Embed(title="Rutina Viernes", description="Cuerpo completo", color=discord.Color.random())
             fitness_embed.add_field(name="Burpees con mancuernas", value="4 Series de 10 Repeticiones.")
             fitness_embed.add_field(name="Swing con mancuerna", value="4 Series de 15 Repeticiones.")
             fitness_embed.add_field(name="Thrusters con mancuernas", value="4 Series de 12 Repeticiones.")

@@ -37,7 +37,7 @@ class SelectMenu(commands.Cog):
                     name_solicited = select.values[0]
                     response_list = file.readlines()
                     response = random.choice(response_list)
-                menu_embed = discord.Embed(color=discord.Color.green())
+                menu_embed = discord.Embed(color=discord.Color.random())
                 menu_embed.set_author(name=f"{ctx.author.name} ha seleccionado a {name_solicited.capitalize()}.", icon_url=ctx.author.avatar)
                 menu_embed.set_image(url=response)
                 menu_embed.set_footer(

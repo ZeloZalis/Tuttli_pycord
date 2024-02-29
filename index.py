@@ -31,10 +31,6 @@ for cogfile in cogfiles:
     except Exception as e:
         print(f"Error: {e}")
 
-#Variable con el ID de los servidores en los que
-#Se está testeando el bot
-testing_server = [522277286024708096, 574449304832311297]
-
 #La siguiente función sirve para recoger el día, mes y año
 #Y lo guarda en una variable concatenando los datos en una sola
 #Cadena, .zfill(2) se utiliza para asegurarse de que cada valor
