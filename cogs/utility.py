@@ -64,7 +64,7 @@ class Utility(commands.Cog):
             dance_list = file.readlines()
             dance = random.choice(dance_list)
         dance_embed = discord.Embed(color=discord.Color.random())
-        dance_embed.set_author(name=f"{ctx.author.name} ha sacado los pasos prohibidos.", icon_url=ctx.author.avatar)
+        dance_embed.set_author(name=f"{ctx.author.display_name} ha sacado los pasos prohibidos.", icon_url=ctx.author.avatar)
         dance_embed.set_image(url=dance)
         await ctx.respond(embed=dance_embed)
 
