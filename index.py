@@ -4,21 +4,17 @@ import discord
 from discord import Game
 from decouple import config
 from datetime import datetime
-# import logging
 
 #Inicializamos el bot en una variable
 client = discord.Bot()
 intents = discord.Intents.default()
-# intents.messages = True
-
-# logging.basicConfig(level=logging.INFO)
 
 #Se ejecuta al iniciar el bot
 #El change_presence es para cambiar el mensaje "jugando" del bot
 @client.event
 async def on_ready():
     await client.change_presence(activity=Game(name="/help"))
-    print(f"I just logged as {client.user}")
+    print(f"I just logged on {len(client.guilds)} servers.")
 
 #Las siguientes líneas de código son para cargar los cogs
 cogfiles = [
@@ -62,19 +58,5 @@ async def Get_logs(ctx):
 @client.slash_command(name="ping", description="Muestra el ping del bot.")
 async def Ping(ctx):
     await ctx.respond(f"Mi ping es de {int(client.latency*1000)} ms.")
-
-# @client.event
-# async def on_message(message):
-#     # logging.info(f"Mensaje recibido: {message.content} en el canal: {message.channel.id}")
-#     if message.channel.id == 1166507853314539561:
-#         thread = client.get_channel(1209617468188925993)
-#         # logging.info(f"Hilo obtenido {thread}")
-#         if message.content:
-#             await thread.send(message.content)
-#             # logging.info(f"Mensaje enviado.")
-        
-#         for embed in message.embeds:
-#             await thread.send(embed=embed)
-#             # logging.info(f"Embed enviado.")
 
 client.run(config("token"))
