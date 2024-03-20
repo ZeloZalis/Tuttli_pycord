@@ -51,7 +51,7 @@ class Utility(commands.Cog):
 
     #Borra una cantidad de mensajes del chat
     @commands.slash_command(name="clean", description="Borra una cantidad de mensajes del chat.")
-    @commands.has_any_role("Mod", "Shōgun")
+    @commands.has_permissions(administrator=True)
     @commands.has_permissions(manage_messages=True)
     async def clean(self, ctx, count: int):
         await ctx.channel.purge(limit=count+1)

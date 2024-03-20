@@ -1,0 +1,9 @@
+{"url":"https://c.tenor.com/kmiME8LLVscAAAAd/tenor.gif", "name":"One Piece", "description":"le lanzó un rayo a"}
+{"url":"https://c.tenor.com/OwgyByua-e8AAAAd/tenor.gif", "name":"Jujutsu Kaisen", "description":"lanzó: Ao en contra de"}
+{"url":"https://c.tenor.com/22ZnWG09mzYAAAAd/tenor.gif", "name":"Jujutsu Kaisen", "description":"lanzó: Murasaki en contra de"}
+{"url":"https://c.tenor.com/gmvdv-e1EhcAAAAC/tenor.gif", "name":"Jujutsu Kaisen", "description":"le dio una ráfaga de golpes a"}
+{"url":"https://c.tenor.com/lcmyfsNu54sAAAAC/tenor.gif", "name":"Naruto", "description":"le partió la madre a"}
+{"url":"https://c.tenor.com/fH6MPYB5JjUAAAAC/tenor.gif", "name":"Nichijou", "description":"balaceó a"}
+{"url":"https://c.tenor.com/4p2gwNLsxBEAAAAC/tenor.gif", "name":"¿?", "description":"estampó contra la pared a"}
+{"url":"https://c.tenor.com/SEKX9kvdqz4AAAAC/tenor.gif", "name":"Boku no Hero Academia", "description":"le dio un Smash a"}
+{"url":"https://c.tenor.com/sgzZFnBVXCMAAAAd/tenor.gif", "name":"One Punch Man", "description":"le dio un madrazo a"}
