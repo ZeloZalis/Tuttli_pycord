@@ -15,7 +15,7 @@ class SelectMenu(commands.Cog):
         
         #Esta clase crea la lista de opciones, con sus descripciones y valores
         class MyView(discord.ui.View):
-            @discord.ui.select(placeholder="Lista de amikos", options=[
+            @discord.ui.select(placeholder="Lista de amikos", max_values=1, options=[
                 discord.SelectOption(label="Payito", value="payito", emoji="🦔", description="Muestra un gif de payito."),
                 discord.SelectOption(label="Urielito", value="urielito", emoji="🏳️‍🌈", description="Muestra un gif de uriel."),
                 discord.SelectOption(label="Yes", value="ye", emoji="👽", description="Muestra un mensaje de ye."),
