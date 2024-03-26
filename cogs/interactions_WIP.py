@@ -7,7 +7,7 @@ class Interactions(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.slash_command(guild_ids=[522277286024708096, 574449304832311297], name="attack", description="Atacas a una persona.")
+    @commands.slash_command(name="attack", description="Atacas a una persona.")
     async def attack(self, ctx, member: discord.Member):
         try:
             with open(f"resources/attack.txt", "r", encoding="utf-8") as file:

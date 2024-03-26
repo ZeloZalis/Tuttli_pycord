@@ -23,19 +23,29 @@ class Utility(commands.Cog):
         self.client = client
     
     #Comando de ayuda, envía un enved con la información de los comandos
-    # @commands.slash_command(name="help", description="Muestra los comandos del bot.")
-    # async def Help(self, ctx):
-    #     help_embed = discord.Embed(
-    #         title = "Tuttli comandos!",
-    #         description = "A continuación tienes la lista de comandos disponibles de Tuttli:",
-    #         color = discord.Color.green()
-    #         )
-    #     help_embed.set_author(name=f"Requested by. {ctx.author.name}", icon_url=ctx.author.avatar)
-    #     help_embed.add_field(
-    #         name = "$payito, $ehlipin, $yoelito, $urielito, $valki, $luí, $freddy",
-    #         value = "Muestra un gif del respectivo.", inline=False
-    #         )
-    #     await ctx.respond(embed=help_embed)
+    @commands.slash_command(name="about", description="Muestra información del bot.")
+    async def About(self, ctx):
+        help_embed = discord.Embed(
+            title = "Acerca de Tuttli",
+            description=" ",
+            color = discord.Color.green()
+            )
+        help_embed.add_field(
+            name = "Desarrollo",
+            value = f"Tuttli es un bot programado con Python, usando la librería Pycord y desarrollado por **difoshi** (usuario de discord).",
+            inline=False
+            )
+        help_embed.add_field(
+            name="Tipo de comandos",
+            value="Actualmente (y es posible que siga así) este bot sólo tiene comandos slash.",
+            inline=False
+        )
+        help_embed.add_field(
+            name="Planes a futuro",
+            value="Tuttli es un bot bastante reciente, creado a inicios del año 2024 para un grupo selecto de amigos, pero la vista a futuro es construir un bot con bastantes funciones tanto útiles como divertidas para llevarlo a comunidades grandes.",
+            inline=False
+        )
+        await ctx.respond(embed=help_embed)
 
     #Lanza un dado del 1 al 6
     @commands.slash_command(name="roll", description="Tira un dado de 6 caras.")

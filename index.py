@@ -13,7 +13,7 @@ intents = discord.Intents.default()
 #El change_presence es para cambiar el mensaje "jugando" del bot
 @client.event
 async def on_ready():
-    await client.change_presence(activity=Game(name="/help"))
+    await client.change_presence(activity=Game(name="/about"))
     print(f"I just logged on {len(client.guilds)} servers.")
 
 #Las siguientes líneas de código son para cargar los cogs

@@ -10,7 +10,7 @@
 #     async def on_message(self, message):
 #         if message.author.bot or message.type != discord.MessageType.default:
 #             return
-#         channel_id = 1166507853314539561
+#         _id = 1166507853314539561
 #         thread_id = 1206075832016175155
 
 #         if message.channel.id == channel_id:
