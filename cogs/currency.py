@@ -12,45 +12,29 @@ class dollarAPI(commands.Cog):
     #La información de los precios actuales
     @commands.slash_command(guild_ids=servers, name="dolar", description="Muestra los precios del dolar en Venezuela.")
     async def Dolar(self, ctx):
+        await ctx.defer()
         try:
-            get_dollar = requests.get('https://pydolarvenezuela-api.vercel.app/api/v1/dollar/')
-            data_dollar = get_dollar.json()
-            request_date = data_dollar['datetime']['date']
+            #Se realizarán 3 llamados a APIs que tomarán el precio de Binance, EnParalelo y BCV
+            get_enparalelo = requests.get('https://pydolarvenezuela-api.vercel.app/api/v1/dollar/unit/enparalelovzla')
+            data_enparalelo = get_enparalelo.json()
+
+            get_bcv = requests.get('https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv')
+            data_bcv = get_bcv.json()
+
+            get_binance = requests.get('https://pydolarvenezuela-api.vercel.app/api/v1/dollar/unit/binance')
+            data_binance = get_binance.json()  
+
+            #Con esto, tomaremos la información de la fecha en la que se hace el llamado para
+            #Luego imprimirla en el footer
+            request_date = data_bcv['datetime']['date']
 
             dolar_embed = discord.Embed(title="Precio del Dolar en Venezuela", color=discord.Color.random())
-            dolar_embed.add_field(name="BCV:", value=f"{data_dollar['monitors']['bcv']['price']} VEF", inline=True)
-            dolar_embed.add_field(name="Binance:", value=f"{data_dollar['monitors']['binance']['price']} VEF", inline=True)
-            dolar_embed.add_field(name="Cripto Dolar:", value=f"{data_dollar['monitors']['cripto_dolar']['price']} VEF", inline=True)
-            dolar_embed.add_field(name="DolarToday:", value=f"{data_dollar['monitors']['dolar_today']['price']} VEF", inline=True)
-            dolar_embed.add_field(name="EnParaleloVnzl:", value=f"{data_dollar['monitors']['enparalelovzla']['price']} VEF", inline=True)
+            dolar_embed.add_field(name="BCV:", value=f"{data_bcv['monitors']['usd']['price']} VEF")
+            dolar_embed.add_field(name="Binance:", value=f"{data_binance['price']} VEF")
+            dolar_embed.add_field(name="EnParaleloVnzl:", value=f"{data_enparalelo['price']} VEF")
             dolar_embed.set_image(url="https://c.tenor.com/NpGpS5lm0ekAAAAC/tenor.gif")
             dolar_embed.set_footer(
-                text=f"{request_date.capitalize()}, {data_dollar['datetime']['time']}",
-                icon_url="https://cdn.discordapp.com/avatars/1186161512298074122/099fc4f5836e1152d3625345eae7f1ad.png"
-                )
-            await ctx.respond(embed=dolar_embed)
-        except Exception as e:
-            print(f"Ha ocurrido un error: {e}.")
-            await ctx.respond("Ha ocurrido un error.")
-
-    #Este es el comando para solicitar a la API del euro
-    #La información de los precios actuales
-    @commands.slash_command(guild_ids=servers, name="euro", description="Muestra los precios del euro en Venezuela.")
-    async def Euro(self, ctx):
-        try:
-            get_euro = requests.get('https://pydolarvenezuela-api.vercel.app/api/v1/euro/')
-            data_euro = get_euro.json()
-            request_date = data_euro['datetime']['date']
-
-            dolar_embed = discord.Embed(title="Precio del Euro en Venezuela", color=discord.Color.random())
-            dolar_embed.add_field(name="BCV:", value=f"{data_euro['monitors']['bcv']['price']} VEF", inline=True)
-            dolar_embed.add_field(name="Binance:", value=f"{data_euro['monitors']['binance']['price']} VEF", inline=True)
-            dolar_embed.add_field(name="Cripto Euro:", value=f"{data_euro['monitors']['cripto_euro']['price']} VEF", inline=True)
-            dolar_embed.add_field(name="EuroToday:", value=f"{data_euro['monitors']['euro_today']['price']} VEF", inline=True)
-            dolar_embed.add_field(name="EnParaleloVnzl:", value=f"{data_euro['monitors']['enparalelovzla']['price']} VEF", inline=True)
-            dolar_embed.set_image(url="https://c.tenor.com/S2zUB5nC4ZUAAAAd/tenor.gif")
-            dolar_embed.set_footer(
-                text=f"{request_date.capitalize()}, {data_euro['datetime']['time']}",
+                text=f"{request_date.capitalize()}, {data_bcv['datetime']['time']}",
                 icon_url="https://cdn.discordapp.com/avatars/1186161512298074122/099fc4f5836e1152d3625345eae7f1ad.png"
                 )
             await ctx.respond(embed=dolar_embed)
