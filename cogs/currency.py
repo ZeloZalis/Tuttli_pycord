@@ -39,7 +39,7 @@ class dollarAPI(commands.Cog):
                 )
             await ctx.respond(embed=dolar_embed)
         except Exception as e:
-            print(f"Ha ocurrido un error: {e}.")
+            print(f"Ha ocurrido un error con el comando Dolar: {e}")
             await ctx.respond("Ha ocurrido un error.")
 
 def setup(client):

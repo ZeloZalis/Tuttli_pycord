@@ -1,0 +1,6 @@
+{"name":"1", "description":" ", "effect":" "}
+{"name":"2", "description":" ", "effect":" "}
+{"name":"3", "description":" ", "effect":" "}
+{"name":"4", "description":" ", "effect":" "}
+{"name":"5", "description":" ", "effect":" "}
+{"name":"6", "description":" ", "effect":" "}

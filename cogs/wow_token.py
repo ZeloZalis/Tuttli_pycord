@@ -44,7 +44,7 @@ class WoW_Token(commands.Cog):
         self.client = client
 
     @commands.slash_command(name="wow_token", description="Muestra el precio del Token de WoW en America y Europa.")
-    async def wow_token(self, ctx):
+    async def Wow_token(self, ctx):
         await ctx.defer()
         try:
             token = create_access_token(config("wow_client_id"), config("wow_client_secret"))
@@ -72,7 +72,8 @@ class WoW_Token(commands.Cog):
             token_embed.set_image(url="https://static.wikia.nocookie.net/wowpedia/images/0/05/WoW_Token_Shop.jpg")
             await ctx.followup.send(embed=token_embed)
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Ha ocurrido un error con el comando Wow_token: {e}")
+            await ctx.respond("Ha ocurrido un error.")
 
 def setup(client):
     client.add_cog(WoW_Token(client))

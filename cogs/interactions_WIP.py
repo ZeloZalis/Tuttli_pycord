@@ -14,12 +14,11 @@ class Interactions(commands.Cog):
                 response_list = [json.loads(line) for line in file.readlines()]
                 response = random.choice(response_list)
             attack_embed = discord.Embed(color=discord.Color.random())
-            # attack_embed.set_author(name=f"{ctx.author.display_name} {response['description']} {member.display_name}.", icon_url=ctx.author.avatar)
             attack_embed.set_image(url=f"{response['url']}")
             attack_embed.set_footer(text=f"Anime: {response['name']}")
             await ctx.respond(f"**{ctx.author.display_name}** {response['description']} {member.mention}.", embed=attack_embed)
         except Exception as e:
-            print(f"Ha ocurrido un error: {e}")
+            print(f"Ha ocurrido un error con el comando Attack: {e}")
             await ctx.respond("Ha ocurrido un error.")
     
 def setup(client):
