@@ -3,6 +3,16 @@ import random
 import discord
 from discord.ext import commands
 
+class Battle_menu(discord.ui.Select):
+    def __init__(self, cog, options):
+        self.cog = cog
+
+        pass
+
+    pass
+
+
+
 class Battle_start():
     def __init__(self, cog, retador, retado, thread_id):
         self.author = retador
@@ -46,7 +56,6 @@ class Battle_start():
     async def Battle_phase(self):
         print("Entró en Battle_phase.")
         num = random.randint(1, 6)
-        # turn = None
         print(f"Número obtenido: {num}")
         if num%2 == 0:
             self.user1_turn = True
@@ -54,11 +63,16 @@ class Battle_start():
         else:
             self.user1_turn = False
             print("Se entró en el número impar.")
+
         while True:
             print("Inicia el ciclo")
             if self.user1_turn == True:
                 print("Se entró en el if True.")
                 await self.thread_id.send(f"Turno de {self.author.display_name}.")
+                with open("resources/battle/skills.txt") as file:
+                    read_lines = file.readlines()
+                    attack_list = random.sample(read_lines, 3)
+                    print(f"{attack_list}")
                 print("Mensaje enviado True.")
                 #Acá se mandará un embed con un botón para escojer la acción
                 #En principio sólo se podrá usar ataque
