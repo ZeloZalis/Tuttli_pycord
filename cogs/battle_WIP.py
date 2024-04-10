@@ -4,64 +4,111 @@ import discord
 from discord.ext import commands
 
 class Battle_start():
-    def __init__(self, user1, user2, thread_id):
-        self.user1 = user1
+    def __init__(self, cog, retador, retado, thread_id):
+        self.author = retador
+        self.member = retado
         self.user1_hp = 100
         self.user1_turn = None
-        self.user2 = user2
         self.user2_hp = 100
         self.thread_id = thread_id
+        self.cog = cog
     
-    def Victory_Lose(self):
+    async def Victory_Lose(self):
         if self.user1_hp <= 0:
-            #Ha ganado el jugador 1
+            #Ha ganado el jugador 2
             pass
         elif self.user2_hp <= 0:
-            #Ha ganado el jugador 2
+            #Ha ganado el jugador 1
             pass
         else:
             #Se repite la fase de combate
             self.Battle_phase()
-    def First_turn(self):
-        num = 10
-        #Se consigue un numero al azar
+    # async def First_turn(self):
+    #     num = 10
+    #     #Se consigue un numero al azar
+    #     if num%2 == 0:
+    #         self.user1_turn == 1
+    #     else:
+    #         self.user1_turn == 0
+    async def Switch_turn(self, turn):
+        print("Entró a la función de cambio de turno.")
+        if turn == True:
+            print("Cambio de True a False.")
+            self.user1_turn = False
+            return
+        elif turn == False:
+            print("Cambio de False a True.")
+            self.user1_turn = True
+            return
+        else:
+            print(f"Valor de turno no válido: {turn}")
+            return
+    async def Battle_phase(self):
+        print("Entró en Battle_phase.")
+        num = random.randint(1, 6)
+        # turn = None
+        print(f"Número obtenido: {num}")
         if num%2 == 0:
             self.user1_turn = True
+            print("Se entró en el número par.")
         else:
             self.user1_turn = False
-    def Battle_phase(self):
-        if self.user1_turn == True:
-            #Acá se mandará un embed con un botón para escojer la acción
-            #En principio sólo se podrá usar ataque
+            print("Se entró en el número impar.")
+        while True:
+            print("Inicia el ciclo")
+            if self.user1_turn == True:
+                print("Se entró en el if True.")
+                await self.thread_id.send(f"Turno de {self.author.display_name}.")
+                print("Mensaje enviado True.")
+                #Acá se mandará un embed con un botón para escojer la acción
+                #En principio sólo se podrá usar ataque
             
-            #De esta manera cambiamos el turno al otro jugador
-            self.user1_turn == False
-            self.Victory_Lose()
+                #De esta manera cambiamos el turno al otro jugador
+                await self.Switch_turn(self.user1_turn)
+                # await self.Victory_Lose()
+
+            if self.user1_turn == False:
+                print("Se entró en el if False.")
+                await self.thread_id.send(f"Turno de {self.member.display_name}.")
+                print("Mensaje enviado False")
+                #Lo mismo, pero para el jugador dos
+                await self.Switch_turn(self.user1_turn)
+                # await self.Victory_Lose()
+    
+    async def Surrender(self):
+        if self.user1_turn == True:
+            #Se rinde el jugador uno
             pass
-        elif self.user1_turn == False:
-            #Lo mismo, pero para el jugador dos
-            self.user1_turn == True
-            self.Victory_Lose()
+        else:
+            #Se rinde el jugador dos
             pass
+
+
 class Combat(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.ctx = None
 
+    #El siguiente comando será para retar a un jugador a un duelo, en el mismo se desarrollará todo
     @commands.slash_command(guild_ids=[522277286024708096, 574449304832311297], name="duel", description="Retas a un usuario a un combate.")
     async def duel(self, ctx, member:discord.Member):
+        #Defer para esperar una respuesta (se debe agregar un tiempo máximo que se puede esperar para aceptar/rechazar)
         await ctx.defer()
+        #Obtenemos el canal en una variable, y ctx también
         channel_used = ctx.channel
+        self.ctx = ctx
 
+        #Confirmamos primero si el miembro está en dicho servidor
         if member is None:
             print("El jugador no está en el servidor.")
             await ctx.respond("El jugador no se encuentra en este servidor.")
-
         else:
             await ctx.respond(f"Reto enviado a {member.display_name}.")
             print("Se ha entrado en el else.")
             channel = ctx.channel
             print(f"Canal obtenido: {channel}")
 
+            #Creamos el objeto que enviará la pregunta al usuario
             class MyView(discord.ui.View):
                 def __init__(self):
                     super().__init__()
@@ -77,21 +124,28 @@ class Combat(commands.Cog):
                         discord.SelectOption(label="No", value="0", emoji="❌")
                     ])
                 
+                #El callback es lo que se realizará dependiendo de si acepta o no el reto
                 async def callback(self, select, interaction):
                     print("Callback creado.")
+                    #La siguiente condicional es para que no pueda responder más de una vez
                     if self.used:
                         await member.send("Ya has respondido al duelo.")
                         return
                     
+                    #Esta condicional es para cuando el jugador acepte el duelo
                     if select.values[0] == "1":
-                        print("Valor obtenido: yes")
+                        #Se crea un mensaje de inicio y se crea el thread para el combate
                         message = await channel_used.send(f"Ha iniciado el combate entre {ctx.author.mention} y {member.mention}.")
                         battle_thread = await channel_used.create_thread(name="Combate por turnos", message=message, type=discord.ChannelType.public_thread)
-                        print("thread creado.")
-                        print("Mensaje enviado en el thread.")
+                        
+                        #Este es un mensaje de vuelta para el jugador retado
                         await interaction.response.send_message(f"Has aceptado el duelo, la contienda se realizará en: {battle_thread.mention}.")
                         self.used = True
-
+                        
+                        #Ahora se inicia la clase que maneja el combate
+                        battle = Battle_start(self, ctx.author, member, battle_thread)
+                        await battle.Battle_phase()
+                    #Esta, para cuando lo rechaze
                     elif select.values[0] == "0":
                         print("Valor obtenido: no")
                         await interaction.response.send_message("Se ha cancelado el combate.")

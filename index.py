@@ -53,6 +53,13 @@ async def Get_logs(ctx):
         json.dump(log, f)
     print(f"El usuario {log['author_name']} ({log['author_id']}) ha ejecutado el comando {log['command_used']} en {log['guild_name']} ({log['guild_id']}).")
 
+#Aquí se comenzará a trabajar un comando para hacer logs de los errores que presente
+#el bot al ejecutar comandos
+@client.event
+async def on_command_error(error):
+    print(f"ha ocurrido un error: {error}")
+
+
 #Este es un comando global (no necesita agregar los servidores en los que funcionará)
 #Al ser comando global, tarda en actualizarse en todos los servidores
 @client.slash_command(name="ping", description="Muestra el ping del bot.")
