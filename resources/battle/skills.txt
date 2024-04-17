@@ -1,6 +1,3 @@
-{"name":"1", "description":" ", "effect":" "}
-{"name":"2", "description":" ", "effect":" "}
-{"name":"3", "description":" ", "effect":" "}
-{"name":"4", "description":" ", "effect":" "}
-{"name":"5", "description":" ", "effect":" "}
-{"name":"6", "description":" ", "effect":" "}
+{"name":"1", "description":"Ataque 1", "effect":"-15", "gif":" ", "serie":" ", "type":"⚔️"}
+{"name":"2", "description":"Ataque 2", "effect":"20", "gif":" ", "serie":" ", "type":"💖"}
+{"name":"3", "description":"Ataque 3", "effect":"-5", "gif":" ", "serie":" ", "type":"⚔️"}
