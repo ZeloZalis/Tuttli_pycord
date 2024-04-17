@@ -1,17 +1,33 @@
-import json
 import random
 import discord
 from discord.ext import commands
 
-class Battle_menu(discord.ui.Select):
-    def __init__(self, cog, options):
+#1
+##############################################################################
+class SelectMenu(discord.ui.Select):
+    def __init__(self, cog, atk_list):
         self.cog = cog
+        self.attack_list = atk_list
+        options = [
+            discord.SelectOption(
+                label= attack['name'],
+                value= attack['name'],
+                emoji= attack['type'],
+                description= attack['description']
+            ) for attack in self.attack_list
+        
+        ]
+        super().__init__(placeholder="Selecciona un ataque", options=options)
+    
+    async def callback(self, interaction: discord.Interaction):
 
-        pass
 
-    pass
-
-
+        await interaction.response.send_message(f"Callback.")
+class Desambiguation(discord.ui.View):
+    def __init__(self, cog, atk_list):
+        super().__init__()
+        self.add_item(SelectMenu(cog, atk_list))
+##############################################################################
 
 class Battle_start():
     def __init__(self, cog, retador, retado, thread_id):
@@ -33,47 +49,48 @@ class Battle_start():
         else:
             #Se repite la fase de combate
             self.Battle_phase()
-    # async def First_turn(self):
-    #     num = 10
-    #     #Se consigue un numero al azar
-    #     if num%2 == 0:
-    #         self.user1_turn == 1
-    #     else:
-    #         self.user1_turn == 0
+
     async def Switch_turn(self, turn):
-        print("Entró a la función de cambio de turno.")
+        # print("Entró a la función de cambio de turno.")
         if turn == True:
-            print("Cambio de True a False.")
+            # print("Cambio de True a False.")
             self.user1_turn = False
             return
         elif turn == False:
-            print("Cambio de False a True.")
+            # print("Cambio de False a True.")
             self.user1_turn = True
             return
         else:
-            print(f"Valor de turno no válido: {turn}")
+            # print(f"Valor de turno no válido: {turn}")
             return
     async def Battle_phase(self):
-        print("Entró en Battle_phase.")
+        # print("Entró en Battle_phase.")
         num = random.randint(1, 6)
-        print(f"Número obtenido: {num}")
+        # print(f"Número obtenido: {num}")
         if num%2 == 0:
             self.user1_turn = True
-            print("Se entró en el número par.")
+            # print("Se entró en el número par.")
         else:
             self.user1_turn = False
-            print("Se entró en el número impar.")
+            # print("Se entró en el número impar.")
 
         while True:
-            print("Inicia el ciclo")
+            # print("Inicia el ciclo")
             if self.user1_turn == True:
-                print("Se entró en el if True.")
+                # print("Se entró en el if True.")
                 await self.thread_id.send(f"Turno de {self.author.display_name}.")
-                with open("resources/battle/skills.txt") as file:
+                # print("Mensaje enviado True.")
+                with open("resources/battle/skills.txt", encoding="utf-8") as file:
                     read_lines = file.readlines()
                     attack_list = random.sample(read_lines, 3)
-                    print(f"{attack_list}")
-                print("Mensaje enviado True.")
+                    # print(f"{attack_list}")
+                diccio = [eval(i) for i in attack_list]
+                battle_view = Desambiguation(self, diccio)
+                print("Se ha creado el view en la función de combate.")
+                battle_view.add_item(SelectMenu(self.cog, diccio))
+                print("Se ha llamado al view.")
+                await self.thread_id.send(view=battle_view)
+                break
                 #Acá se mandará un embed con un botón para escojer la acción
                 #En principio sólo se podrá usar ataque
             
@@ -82,10 +99,21 @@ class Battle_start():
                 # await self.Victory_Lose()
 
             if self.user1_turn == False:
-                print("Se entró en el if False.")
+                # print("Se entró en el if False.")
                 await self.thread_id.send(f"Turno de {self.member.display_name}.")
-                print("Mensaje enviado False")
+                # print("Mensaje enviado False")
                 #Lo mismo, pero para el jugador dos
+                with open("resources/battle/skills.txt", encoding="utf-8") as file:
+                    read_lines = file.readlines()
+                    attack_list = random.sample(read_lines, 3)
+                    # print(f"{attack_list}")
+                diccio = [eval(i) for i in attack_list]
+                battle_view = Desambiguation(self, diccio)
+                print("Se ha creado el view en la función de combate.")
+                battle_view.add_item(SelectMenu(self.cog, diccio))
+                print("Se ha llamado al view.")
+                await self.thread_id.send(view=battle_view)
+                break
                 await self.Switch_turn(self.user1_turn)
                 # await self.Victory_Lose()
     
@@ -114,13 +142,13 @@ class Combat(commands.Cog):
 
         #Confirmamos primero si el miembro está en dicho servidor
         if member is None:
-            print("El jugador no está en el servidor.")
+            # print("El jugador no está en el servidor.")
             await ctx.respond("El jugador no se encuentra en este servidor.")
         else:
             await ctx.respond(f"Reto enviado a {member.display_name}.")
-            print("Se ha entrado en el else.")
+            # print("Se ha entrado en el else.")
             channel = ctx.channel
-            print(f"Canal obtenido: {channel}")
+            # print(f"Canal obtenido: {channel}")
 
             #Creamos el objeto que enviará la pregunta al usuario
             class MyView(discord.ui.View):
@@ -128,7 +156,7 @@ class Combat(commands.Cog):
                     super().__init__()
                     self.used = False
 
-                print("Clase creada")
+                # print("Clase creada")
                 used = False
                 @discord.ui.select(
                     placeholder="¿Aceptas el reto?",
@@ -161,16 +189,16 @@ class Combat(commands.Cog):
                         await battle.Battle_phase()
                     #Esta, para cuando lo rechaze
                     elif select.values[0] == "0":
-                        print("Valor obtenido: no")
+                        # print("Valor obtenido: no")
                         await interaction.response.send_message("Se ha cancelado el combate.")
                         await channel_used.send("El usuario ha rechazado el duelo.")
-                        print("Respuesta negativa enviada al canal.")
+                        # print("Respuesta negativa enviada al canal.")
                         self.used = True
 
             view = MyView()
-            print("View creado.")
+            # print("View creado.")
             await member.send(f"{ctx.author.mention} te ha retado a un duelo.", view=view)
-            print("Mensaje de reto enviado.")
+            # print("Mensaje de reto enviado.")
 
 def setup(client):
     client.add_cog(Combat(client))
