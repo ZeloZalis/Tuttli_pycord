@@ -4,29 +4,39 @@ from discord.ext import commands
 
 #1
 ##############################################################################
-class SelectMenu(discord.ui.Select):
+class AttackMenu(discord.ui.Select):
     def __init__(self, cog, atk_list):
         self.cog = cog
         self.attack_list = atk_list
         options = [
             discord.SelectOption(
-                label= attack['name'],
-                value= attack['name'],
-                emoji= attack['type'],
+                label=attack['name'],
+                value=attack['name'],
+                emoji=attack['type'],
                 description= attack['description']
             ) for attack in self.attack_list
-        
         ]
         super().__init__(placeholder="Selecciona un ataque", options=options)
     
     async def callback(self, interaction: discord.Interaction):
+        option_selected = self.values[0]
+        with open("resources/battle/skills.txt", encoding="utf-8") as file:
+            read_lines = file.readlines()
+            diccio = [eval(i) for i in read_lines]
+        option_info = next((diccionario for diccionario in diccio if diccionario["name"] == str(option_selected)), None)
+        attack_embed = discord.Embed(
+            title=option_info['name'],
+            description=option_info['description'],
+            color=discord.Color.random(),
+        )
+        attack_embed.set_image(url=option_info['gif'])
+        attack_embed.set_footer(text=f"Anime: {option_info['serie']}.")
+        await interaction.response.send_message(f"Callback.", embed=attack_embed)
 
-
-        await interaction.response.send_message(f"Callback.")
-class Desambiguation(discord.ui.View):
+class AttackMenuView(discord.ui.View):
     def __init__(self, cog, atk_list):
         super().__init__()
-        self.add_item(SelectMenu(cog, atk_list))
+        self.add_item(AttackMenu(cog, atk_list))
 ##############################################################################
 
 class Battle_start():
@@ -85,9 +95,9 @@ class Battle_start():
                     attack_list = random.sample(read_lines, 3)
                     # print(f"{attack_list}")
                 diccio = [eval(i) for i in attack_list]
-                battle_view = Desambiguation(self, diccio)
+                battle_view = AttackMenuView(self, diccio)
+                # value_attack = battle_view.callback()
                 print("Se ha creado el view en la función de combate.")
-                battle_view.add_item(SelectMenu(self.cog, diccio))
                 print("Se ha llamado al view.")
                 await self.thread_id.send(view=battle_view)
                 break
@@ -108,9 +118,8 @@ class Battle_start():
                     attack_list = random.sample(read_lines, 3)
                     # print(f"{attack_list}")
                 diccio = [eval(i) for i in attack_list]
-                battle_view = Desambiguation(self, diccio)
+                battle_view = AttackMenuView(self, diccio)
                 print("Se ha creado el view en la función de combate.")
-                battle_view.add_item(SelectMenu(self.cog, diccio))
                 print("Se ha llamado al view.")
                 await self.thread_id.send(view=battle_view)
                 break

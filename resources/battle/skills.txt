@@ -1,3 +1,6 @@
-{"name":"1", "description":"Ataque 1", "effect":"-15", "gif":" ", "serie":" ", "type":"⚔️"}
-{"name":"2", "description":"Ataque 2", "effect":"20", "gif":" ", "serie":" ", "type":"💖"}
-{"name":"3", "description":"Ataque 3", "effect":"-5", "gif":" ", "serie":" ", "type":"⚔️"}
+{"name":"Rasengan", "description":"-15 puntos de vida.", "effect":"-15", "gif":"https://c.tenor.com/eGq7mV4VpikAAAAd/tenor.gif", "serie":"Naruto Shippuden", "type":"⚔️"}
+{"name":"Gomu gomu no Gatling", "description":"-10 puntos de vida", "effect":"-10", "gif":"https://c.tenor.com/Y5TohZMmPEYAAAAC/tenor.gif", "serie":"One Piece", "type":"⚔️"}
+{"name":"Regeneración", "description":"+20 de salud.", "effect":"20", "gif":"https://c.tenor.com/QZ3hVpoLfCQAAAAC/tenor.gif", "serie":"¿?", "type":"💖"}
+{"name":"Murasaki", "description":"-20 puntos de vida.", "effect":"-20", "gif":"https://c.tenor.com/22ZnWG09mzYAAAAd/tenor.gif", "serie":"Jujutsu Kaisen", "type":"⚔️"}
+{"name":"Gomu gomu no Kaminari", "description":"-15 puntos de vida.", "effect":"-15", "gif":"https://c.tenor.com/kmiME8LLVscAAAAd/tenor.gif", "serie":"One Piece", "type":"⚔️"}
+{"name":"Ora ora ora!", "description":"-15 puntos de vida.", "effect":"-15", "gif":"https://c.tenor.com/KLJboBGtpzkAAAAd/tenor.gif", "serie":"Jojo's Bizarre Adventure", "type":"⚔️"}
